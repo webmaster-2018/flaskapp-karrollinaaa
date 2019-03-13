@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # quiz-orm/app.py
+
 from flask import g
 from modele import *
 from views import *
@@ -11,10 +12,12 @@ app.config.update(dict(
     DATABASE=os.path.join(app.root_path, baza_plik),
 ))
 
+
 @app.before_request
 def before_request():
     g.db = baza
     g.db.connect(reuse_if_open=True)
+
 
 @app.after_request
 def after_request(response):
