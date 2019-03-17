@@ -9,6 +9,15 @@ from forms import *
 app = Flask(__name__)
 
 
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            if type(error) is list:
+                error = error[0]
+            flash("Błąd: {}. Pole: {}".format(
+                error,
+                getattr(form, field).label.text))
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -17,9 +26,7 @@ def index():
 @app.route("/lista_uczniow")
 def lista_uczniow():
     uczen = (Uczen
-             .select(Uczen.id, Uczen.imie_ucznia, Uczen.nazwisko_ucznia, Plec.nazwa_plci, Klasa.nazwa_klasy)
-             .join_from(Uczen, Plec) 
-             .join_from(Uczen, Klasa, JOIN.LEFT_OUTER))
+             .select(Uczen.id, Uczen.imie_ucznia, Uczen.nazwisko_ucznia))
     return render_template('uczniowie_lista.html', uczen=uczen)
 
 
@@ -33,10 +40,8 @@ def lista_klas():
 def dodaj_nowego_ucznia():
 
     form = UczenForm()
-    form.klasa_ucznia.choices = [(k.id, k.nazwa_klasy)
-                          for k in Klasa.select()]
-    form.plec_ucznia.choices = [(p.id, p.nazwa_plci)
-                         for p in Plec.select()]
+    form.klasa_ucznia.choices = [(k.id, k.nazwa_klasy) for k in Klasa.select()]
+    form.plec_ucznia.choices = [(p.id, p.nazwa_plci) for p in Plec.select()]
 
     if form.validate_on_submit():
         u = Uczen(imie_ucznia=form.imie_ucznia.data,
@@ -69,3 +74,54 @@ def dodaj_nowa_klase():
         return redirect(url_for('lista_klas'))
 
     return render_template('klasy_dodaj.html', form=form)
+
+
+@app.route("/uczniowie_szczegoly/<id>")
+def uczniowie_szczegoly(id):
+    uczen = (Uczen
+             .select(Uczen.id, Uczen.imie_ucznia, Uczen.nazwisko_ucznia, Plec.nazwa_plci, Klasa.nazwa_klasy)
+             .join_from(Uczen, Plec)
+             .join_from(Uczen, Klasa, JOIN.LEFT_OUTER)
+             .where(Uczen.id == id))
+    return render_template('uczniowie_szczegoly.html', uczen=uczen)
+
+
+def get_or_404(uid):
+    try:
+        u = Uczen.get_by_id(uid)
+        return u
+    except Uczen.DoesNotExist:
+        abort(404)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.route("/uczniowie_edytuj/<int:uid>", methods=['GET', 'POST'])
+def uczniowie_edytuj(uid):
+
+    u = get_or_404(uid)
+
+    form = UczenForm(obj=u)
+    form.klasa_ucznia.choices = [(k.id, k.nazwa_klasy) for k in Klasa.select()]
+    form.klasa_ucznia.data = u.klasa_ucznia.id
+    form.plec_ucznia.choices = [(p.id, p.nazwa_plci) for p in Plec.select()]
+    form.plec_ucznia.data = u.plec_ucznia.id
+
+    if form.validate_on_submit():
+        print(form.data)
+        u.imie_ucznia = form.imie_ucznia.data
+        u.nazwisko_ucznia = form.nazwisko_ucznia.data
+        u.plec_ucznia = form.plec_ucznia.data
+        u.klasa_ucznia = form.klasa_ucznia.data
+        u.save()
+
+        flash("Zaktualizowano dane o uczniu: {} {}".format(
+            form.imie_ucznia.data, form.nazwisko_ucznia.data))
+        return redirect(url_for('lista_uczniow'))
+    elif request.method == 'POST':
+        flash_errors(form)
+
+    return render_template('uczniowie_edytuj.html', form=form)

@@ -1,0 +1,39 @@
+{% extends "szablon.html"%}
+{% block tytul%}Uczniowie – Lista{% endblock%}
+{% block h1%} Klasy {% endblock%}
+{% block tresc%}
+<div class="row">
+    {% for u in uczen %}
+    <div class="col-md-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">{{u.imie_ucznia}}</div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">{{u.nazwisko_ucznia}}</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">{{u.plec_ucznia.nazwa_plci}}</div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">{{u.klasa_ucznia.nazwa_klasy}}</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <button type="button" class="btn btn-dark"><a href='/uczniowie_edytuj/{{u}}'>edytuj</a></button>
+    </div>
+{% endfor %}
+</div>
+
+
+
+{% endblock%}

@@ -11,8 +11,7 @@
                     <th scope="col">id</th>
                     <th scope="col">Imie</th>
                     <th scope="col">Nazwisko</th>
-                    <th scope="col">Płeć</th>
-                    <th scope="col">Klasa</th>
+                    <th scope="col">szczegóły</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,10 +20,10 @@
                     <th scope="row">{{u}}</a></th>
                     <td>{{u.imie_ucznia}}</td>
                     <td>{{u.nazwisko_ucznia}}</td>
-                    <td>{{u.plec_ucznia.nazwa_plci}}</td>
-                    <td>{{u.klasa_ucznia.nazwa_klasy}}</td>
-                    {% endfor %}
+                    <td><a href='uczniowie_szczegoly/{{u}}'>szczegóły &rarr;</a></td>
+                    
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
 
