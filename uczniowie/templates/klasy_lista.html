@@ -10,8 +10,7 @@
             <thead>
                 <th scope="col">id</th>
                 <th scope="col">Klasa</th>
-                <th scope="col">Rok Naboru</th>
-                <th scope="col">Rok Matury</th>
+                <th scope="col">szczegóły</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,8 +18,8 @@
                 <tr>
                     <th scope="row">{{k}}</th>
                     <td>{{k.nazwa_klasy}}</td>
-                    <td>{{k.rok_naboru}}</td>
-                    <td>{{k.rok_matury}}</td>
+                    <td><a href='uczniowie_szczegoly/{{k}}'>szczegóły &rarr;</a></td>
+
                     {% endfor %}
                 </tr>
             </tbody>

@@ -32,7 +32,7 @@ def lista_uczniow():
 
 @app.route("/lista_klas")
 def lista_klas():
-    klasa = Klasa.select()
+    klasa = Klasa.select(Klasa.id, Klasa.nazwa_klasy)
     return render_template('klasy_lista.html', klasa=klasa)
 
 
@@ -85,6 +85,11 @@ def uczniowie_szczegoly(id):
              .where(Uczen.id == id))
     return render_template('uczniowie_szczegoly.html', uczen=uczen)
 
+@app.route("/klasy_szczegoly/<id>")
+def klasy_szczegoly(id):
+    klasa = Klasa.select()
+    return render_template('klasy_szczegoly.html', klasa=klasa)
+
 
 def get_or_404(uid):
     try:
@@ -120,6 +125,36 @@ def uczniowie_edytuj(uid):
 
         flash("Zaktualizowano dane o uczniu: {} {}".format(
             form.imie_ucznia.data, form.nazwisko_ucznia.data))
+        return redirect(url_for('lista_uczniow'))
+    elif request.method == 'POST':
+        flash_errors(form)
+
+    return render_template('uczniowie_edytuj.html', form=form)
+
+
+def getOr404(kid):
+    try:
+        k = Klasa.get_by_id(kid)
+        return k
+    except Klasa.DoesNotExist:
+        abort(404)
+
+@app.route("/klasy_edytuj/<int:kid>", methods=['GET', 'POST'])
+def klasy_edytuj(kid):
+
+    k = getOr404(kid)
+
+    form = UczenForm(obj=k)
+
+    if form.validate_on_submit():
+        print(form.data)
+        k.nazwa_klasy = form.nazwa_klasy.data
+        k.rok_naboru = form.rok_naboru.data
+        k.rok_matury = form.rok_matury.data
+        k.save()
+
+        flash("Zaktualizowano dane o klasie: {}".format(
+            form.nazwa_klasy.data))
         return redirect(url_for('lista_uczniow'))
     elif request.method == 'POST':
         flash_errors(form)

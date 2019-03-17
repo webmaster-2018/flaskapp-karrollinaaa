@@ -2,6 +2,24 @@
 {% block tytul%}Uczniowie – Lista{% endblock%}
 {% block h1%} Klasy {% endblock%}
 {% block tresc %}
-    {% include "uczniowie_dodaj.html" %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <form method="POST">
+    
+                {{ form.csrf_token }}
+                {{ form.imie_ucznia.label }} <br>
+                {{ form.imie_ucznia(class="form-control") }} <br>
+                {{ form.nazwisko_ucznia.label }} <br>
+                {{ form.nazwisko_ucznia(class="form-control") }} <br>
+                {{ form.plec_ucznia.label }} <br>
+                {{ form.plec_ucznia(class="form-control") }} <br>
+                {{ form.klasa_ucznia.label }} <br>
+                {{ form.klasa_ucznia(class="form-control") }} <br>
+    
+                <input type="submit" class="btn btn-default" value="Prześlij">
+            </form>
+    
+        </div>
+    </div>
 {% endblock %}
 
