@@ -87,7 +87,7 @@ def uczniowie_szczegoly(id):
 
 @app.route("/klasy_szczegoly/<id>")
 def klasy_szczegoly(id):
-    klasa = Klasa.select()
+    klasa = Klasa.select().where(Klasa.id==id)
     return render_template('klasy_szczegoly.html', klasa=klasa)
 
 
@@ -144,7 +144,7 @@ def klasy_edytuj(kid):
 
     k = getOr404(kid)
 
-    form = UczenForm(obj=k)
+    form = KlasaForm(obj=k)
 
     if form.validate_on_submit():
         print(form.data)
@@ -155,8 +155,8 @@ def klasy_edytuj(kid):
 
         flash("Zaktualizowano dane o klasie: {}".format(
             form.nazwa_klasy.data))
-        return redirect(url_for('lista_uczniow'))
+        return redirect(url_for('lista_klas'))
     elif request.method == 'POST':
         flash_errors(form)
 
-    return render_template('uczniowie_edytuj.html', form=form)
+    return render_template('klasy_edytuj.html', form=form)
