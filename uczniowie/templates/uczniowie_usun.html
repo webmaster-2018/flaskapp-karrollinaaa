@@ -1,0 +1,14 @@
+{% extends "szablon.html"%}
+{% block tytul%}Uczniowie – Lista{% endblock%}
+{% block h1%} Klasy {% endblock%}
+{% block tresc%}
+<form method="POST">
+
+    <p class="lead">Czy na pewno chcesz usunąć ucznia:</p>
+    <p>{{ uczen.imie_ucznia }} {{ uczen.nazwisko_ucznia }}</p>
+
+    <input type="submit" value="Usuń ucznia">
+</form>
+
+
+{% endblock%}

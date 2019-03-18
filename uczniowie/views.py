@@ -160,3 +160,18 @@ def klasy_edytuj(kid):
         flash_errors(form)
 
     return render_template('klasy_edytuj.html', form=form)
+
+
+@app.route("/usun/<int:uid>", methods=['GET', 'POST'])
+def usun(uid):
+    u = get_or_404(uid)
+
+    if request.method == 'POST':
+        flash('Usunięto ucznia {} {}'.format(
+            u.imie_ucznia.data, u.nazwisko_ucznia.data), 'sukces')
+        for u in Uczen.select():
+            u.delete_instance()
+        u.delete_instance()
+        return redirect(url_for('lista_uczniow'))
+
+    return render_template("uczniowie_usun.html", uczen=u)
