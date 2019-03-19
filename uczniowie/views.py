@@ -181,6 +181,8 @@ def usun_klase(kid):
     if request.method == 'POST':
         flash('Usunięto klasę {}'.format(
             k.nazwa_klasy), 'sukces')
+        for u in Uczen.select().where(Uczen.klasa_ucznia == k.id):
+            u.delete_instance()
         k.delete_instance()
         return redirect(url_for('lista_klas'))
 
