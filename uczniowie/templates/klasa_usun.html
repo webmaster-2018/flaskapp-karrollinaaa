@@ -1,0 +1,14 @@
+{% extends "szablon.html"%}
+{% block tytul%}Klasy – Usuń{% endblock%}
+{% block h1%} Klasy - usuń {% endblock%}
+{% block tresc%}
+<form method="POST">
+
+    <p class="lead">Czy na pewno chcesz usunąć klasę:</p>
+    <p>{{ klasa.nazwa_klasy}}</p>
+
+    <input type="submit" value="Usuń klasę">
+</form>
+
+
+{% endblock%}

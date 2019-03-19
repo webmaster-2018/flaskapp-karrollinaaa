@@ -1,6 +1,6 @@
 {% extends "szablon.html"%}
-{% block tytul%}Uczniowie – Lista{% endblock%}
-{% block h1%} Klasy {% endblock%}
+{% block tytul%}Klasy – Szczegóły{% endblock%}
+{% block h1%} Szczegóły {% endblock%}
 {% block tresc%}
 <div class="row">
     {% for k in klasa %}
@@ -24,7 +24,11 @@
 </div>
 <div class="row">
     <div class="col-md-5">
-        <button type="button" class="btn btn-dark"><a href='/klasy_edytuj/{{k}}'>edytuj</a></button>
+        <a href='/klasy_edytuj/{{k}}'>edytuj</a>
+    </div>
+    
+    <div class="col-md-5">
+        <a href='/usun_klase/{{k}}'>usuń</a>
     </div>
 {% endfor %}
 </div>

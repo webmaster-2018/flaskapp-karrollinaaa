@@ -1,6 +1,6 @@
 {% extends "szablon.html"%}
-{% block tytul%}Uczniowie – Lista{% endblock%}
-{% block h1%} Klasy {% endblock%}
+{% block tytul%}Uczniowie – Szczegóły{% endblock%}
+{% block h1%} Szczegóły {% endblock%}
 {% block tresc%}
 <div class="row">
     {% for u in uczen %}
@@ -29,10 +29,10 @@
 </div>
 <div class="row">
     <div class="col-md-5">
-        <button type="button" class="btn btn-dark"><a href='/uczniowie_edytuj/{{u}}'>edytuj</a></button>
+        <a href='/uczniowie_edytuj/{{u}}'>edytuj</a>
     </div>
     <div class="col-md-5">
-        <button type="button" class="btn btn-dark"><a href='/usun/{{u}}'>usuń</a></button>
+        <a href='/usun/{{u}}'>usuń</a>
     </div>
 {% endfor %}
 </div>
